@@ -5,10 +5,27 @@ from django.contrib.auth.models import BaseUserManager
 
 # Create your models here.
 class Book(models.Model):
+"""
+    Model representing an article.
+    
+    Custom permissions:
+        can_view: Allows viewing of articles.
+        can_create: Allows creating new articles.
+        can_edit: Allows editing existing articles.
+        can_delete: Allows deletion of articles.
+    """
+
     title = models.CharField(max_length = 200)
     author = models.CharField(max_length = 100)
     publication_year = models.IntegerField(default=200)
-
+    
+    class Meta:
+        permissions = [
+            ('can_view', 'Can View Article'),
+            ('can_create', 'Can Create Article'),
+            ('can_edit', 'Can Edit Article'),
+            ('can_delete', 'Can Delete Article'),
+        ]
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
