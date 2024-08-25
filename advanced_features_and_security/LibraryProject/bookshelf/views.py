@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .forms import ExampleForm
 
 # Create your views here.
 from django.contrib.auth.models import Group, Permission
