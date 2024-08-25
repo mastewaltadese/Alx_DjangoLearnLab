@@ -23,9 +23,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-52%7)f0!w-3p!lrd!6_n=cz2n3x_f^dh4or7!(v4-$@*3uhy9%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
+
+# Security settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Ensure cookies are sent over HTTPS only
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Secure HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 3600  # Adjust the value as needed
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Set secure referrer policy
+SECURE_REFERRER_POLICY = 'strict-origin'
+
+# Ensure the use of HTTPS in production
+SECURE_SSL_REDIRECT = True
+
+# Content Security Policy (CSP) header setup (See Step 4 for middleware)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://trustedscripts.com')
+CSP_STYLE_SRC = ("'self'", 'https://trustedstyles.com')
+CSP_IMG_SRC = ("'self'", 'https://trustedimages.com')
+CSP_FONT_SRC = ("'self'", 'https://trustedfonts.com')
+
+# Use secure proxy headers (if behind a proxy like NGINX)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -43,7 +73,14 @@ INSTALLED_APPS = [
     'myapp',
     'bookshelf',
     'relationship_app',
+    'csp',
+
 ]
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'apis.google.com')
+CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
+CSP_IMG_SRC = ("'self'", 'data:',)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
