@@ -7,6 +7,15 @@ from .models import Books, Article
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404
 
+class MyForm(forms.Form):
+    name = forms.CharField(max_length=100)
+
+def my_view(request):
+    if request.method == 'POST':
+        form = MyForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            results = MyModel.objects.filter(name=name)
 
 # Create groups
 editors_group, created = Group.objects.get_or_create(name='Editors')
