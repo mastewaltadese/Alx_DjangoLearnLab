@@ -1,4 +1,4 @@
-
+from taggit.models import Tag
 from django.contrib.auth import views as auth_views
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -118,4 +118,26 @@ def CommentDeleteView(request, comment_id):
     post_id = comment.post.id
     if request.user == comment.author:
         comment.delete()
-    return redirect('post-detail', pk=post_id)    
+    return redirect('post-detail', pk=post_id)   
+from django.db.models import Q
+from .models import Post
+
+def search_posts(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    else:
+        posts = Post.objects.all()
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+
+
+def posts_by_tag(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = Post.objects.filter(tags__in=[tag])
+    return render(request, 'blog/posts_by_tag.html', {'posts': posts, 'tag': tag})
+
