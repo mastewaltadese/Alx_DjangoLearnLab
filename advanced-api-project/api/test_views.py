@@ -13,6 +13,20 @@ class BookAPITestCase(APITestCase):
         self.list_url = reverse('book-list')
         self.detail_url = reverse('book-detail', args=[self.book1.id])
 
+    def test_create_book_with_authentication(self):
+        # Log in the user
+        self.client.login(username='testuser', password='password')
+        
+        # Test book creation
+        data = {
+            "title": "New Book",
+            "publication_year": 2022,
+            "author": self.author.id
+        }
+        response = self.client.post(self.list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Book.objects.count(), 3)    
+
     def test_get_book_list(self):
         # Test retrieval of book list
         response = self.client.get(self.list_url)
