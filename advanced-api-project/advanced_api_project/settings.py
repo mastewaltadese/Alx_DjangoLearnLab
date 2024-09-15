@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Application definition
 
