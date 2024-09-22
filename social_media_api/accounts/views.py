@@ -12,6 +12,9 @@ from .models import CustomUser
 from .models import Post
 from .serializers import PostSerializer
 
+generics.GenericAPIView
+CustomUser.objects.all()
+
 class RegisterView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
@@ -22,7 +25,7 @@ class LoginView(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=self.user)
         return Response({'token': token.key})
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes(IsAuthenticated)
 def follow_user(request, user_id):
     try:
         user_to_follow = CustomUser.objects.get(id=user_id)
