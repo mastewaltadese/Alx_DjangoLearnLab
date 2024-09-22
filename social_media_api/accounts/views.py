@@ -14,6 +14,7 @@ from .serializers import PostSerializer
 
 generics.GenericAPIView
 CustomUser.objects.all()
+permissions.IsAuthenticated
 
 class RegisterView(generics.CreateAPIView):
     queryset = get_user_model().objects.all()
